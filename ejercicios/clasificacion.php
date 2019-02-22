@@ -7,14 +7,14 @@
  */
 require "../includes/funciones.php";
 $clasificacion = creaClasificacion();
-$x = ordenaPorPuntos($clasificacion);
+//$x = ordenaPorPuntos($clasificacion);
 
 if (isset ($_GET['opc']) && $_GET['opc'] == "mostrar")
     muestra_Clasificacion($x);
 else {
 
     echo "<pre>";
-    var_dump($x);
+    var_dump($clasificacion);
     echo "</pre>";
 
 }

@@ -8,14 +8,14 @@ class DB
     private $pwd = "";
     private $conexionMysqli;
     private $conexionPDO;
-
+    private $conexionPDOsinDB;
 
     public function __construct()
     {
         try {
-            $this->conexionMysqli = new mysqli($this->host, $this->usr, $this->pwd, $this->db);
-            $this->conexionPDO = new PDO("mysql:host=$this->host;dbname=$this->db", $this->usr, $this->pwd);
-
+            //$this->conexionMysqli = new mysqli($this->host, $this->usr, $this->pwd, $this->db);
+            //$this->conexionPDO = new PDO("mysql:host=$this->host;dbname=$this->db", $this->usr, $this->pwd);
+            $this->conexionPDOsinDB = new PDO("mysql:host=$this->host;", $this->usr, $this->pwd);
         } catch (SQLException $e) {
             die($e->getMessage());
         }
@@ -156,6 +156,16 @@ class DB
     function setConexionPDO(PDO $conexionPDO)
     {
         $this->conexionPDO = $conexionPDO;
+    }
+
+    public function getConexionPDOsinDB(): PDO
+    {
+        return $this->conexionPDOsinDB;
+    }
+
+    public function setConexionPDOsinDB(PDO $conexionPDOsinDB): void
+    {
+        $this->conexionPDOsinDB = $conexionPDOsinDB;
     }
 
 

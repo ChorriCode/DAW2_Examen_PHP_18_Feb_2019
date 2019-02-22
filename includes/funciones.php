@@ -1,11 +1,12 @@
 <?php
 
 use modelo\Equipo;
-
+use modelo\Partido;
 require "../includes/bd.php";
 require "../modelo/Equipo.php";
-function crearBaseDatos()
-{
+require "../modelo/Partido.php";
+
+function crearBaseDatos() {
     $db = new DB();
     $conn = $db->getConexionPDO();
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -14,31 +15,275 @@ function crearBaseDatos()
     $stmt->execute();
     echo "Base datos creadas con las tablas vacias...";
 }
+
+
+
+
 // OBJETIVO 1
-function cargarTablaEquipos($fich)
-{
-// completar codigo borrado
-    echo "Tabla equipos creada y cargada ...";
+function cargarTablaEquipos($filePath) {
+
+        $arrayTeams = array();
+
+        if (!file_exists($filePath)) {
+            echo "File not found " . $filePath;
+            die();
+        }
+        // debe haber un CR/LF al final ...
+        $result = fopen($filePath, 'r');
+        while (($registry = fgets($result)) && !feof($result)) {
+            $arrayDataOneResgitry = explode("#", $registry);
+            $idTeam = $arrayDataOneResgitry[0];
+            $shortTeamName = $arrayDataOneResgitry[1];
+            $largeTeamName = $arrayDataOneResgitry[2];
+            $oneTeam = new Equipo();
+            $oneTeam->setId($idTeam);
+            $oneTeam->setPuntos(0);
+            $oneTeam->setNombreCorto($shortTeamName);
+            $oneTeam->setNombre($largeTeamName);
+            $oneTeam->setPg(0);
+            $oneTeam->setPe(0);
+            $oneTeam->setPp(0);
+            $oneTeam->setGf(0);
+            $oneTeam->setGc(0);
+            $arrayTeams[$idTeam] = $oneTeam;
+        }
+        fclose($result);
+        echo "<pre>";
+        insertTeamsTableDB($arrayTeams);
+            echo "<a href='../index.php'> Regresar al menÃº anterior</a><br>";
+            //var_dump($arrayTeams);
+        echo "</pre>";
+        return $arrayTeams;
+
 }
 // OBJETIVO 2
-function cargarTablaPartidos($fich)
-{
+function cargarTablaPartidos($filePath) {
+    $arrayMatches = array();
 
-   // completar código omitido
-    echo "Tabla partidos creada y cargada ...";
+    if (!file_exists($filePath)) {
+        echo "File not found " . $filePath;
+        die();
+    }
+    // debe haber un CR/LF al final ...
+    $result = fopen($filePath, 'r');
+    while (($registry = fgets($result)) && !feof($result)) {
+        $arrayDataOneResgitry = explode("#", $registry);
+        $idMatch = intval($arrayDataOneResgitry[0]);
+        $idWeeklyMatches = intval($arrayDataOneResgitry[1]);
+        $localTeamShortName = $arrayDataOneResgitry[2];
+        $visitTeamShortName = $arrayDataOneResgitry[4];
+        // comprueba si los goles del equipo local son "" es que el partido no se ha jugado y devolvemos menos un gol a cada equipo
+        if ($arrayDataOneResgitry[3] === "") {
+            $localTeamGoals = -1;
+            $visitTeamGoals = -1;
+        } else {
+            $localTeamGoals = intval($arrayDataOneResgitry[3]);
+            $visitTeamGoals = intval($arrayDataOneResgitry[5]);
+        }
+        $oneMatch = new Partido($idMatch);
+        $oneMatch->setJornada($idWeeklyMatches);
+        $oneMatch->setEL($localTeamShortName);
+        $oneMatch->setGL($localTeamGoals);
+        $oneMatch->setEV($visitTeamShortName);
+        $oneMatch->setGV($visitTeamGoals);
+        $arrayMatches[$idMatch] = $oneMatch;
+    }
+    fclose($result);
+    echo "<pre>";
+    insertMatchesTableDB($arrayMatches);
+    echo "<a href='../index.php'> Regresar al menÃº anterior</a><br>";
+    var_dump($arrayMatches);
+    echo "</pre>";
+
+    return $arrayMatches;
 }
+
+/*  FUNCIONES PARA CREAR LAS TABLAS NECESARIAS  */
+
+function isExistDataBaseName($dataBaseName, $pdoConn = null) {
+    $sql = "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$dataBaseName';";
+    try {
+        if (!isset($pdoConn)) {
+            $db= new DB();
+            $pdoConnection = $db->getConexionPDOsinDB();
+
+        } else {
+            $pdoConnection = $pdoConn;
+        }
+        $prepareQuery = $pdoConnection->prepare($sql);
+        $prepareQuery->execute();
+        $result = $prepareQuery->fetchAll();
+    } catch(Exception $e) {
+        echo '<hr>Reading Error: (' . $e->getMessage() .')';
+        return false;
+    }
+    $pdoConnection = null;
+    //devuelve true o false dependiendo si encontrÃ³ la base de datos
+    return $result;
+}
+
+function createTeamsTableDB() {
+    $sql = "";
+    if (!isExistDataBaseName("bdfinalphp")) {
+        //$sql = "CREATE DATABASE $dataBaseName; ";
+        $sql = "DROP DATABASE IF  EXISTS `bdfinalphp` ; CREATE DATABASE IF NOT EXISTS `bdfinalphp` DEFAULT CHARACTER SET utf8 COLLATE utf8_spanish_ci;";
+
+    }
+    $sql .= "USE `bdfinalphp`; ";
+    $sql .= "drop table IF exists `equipos`;" .
+        "CREATE TABLE IF NOT EXISTS `equipos` (" .
+        "  `id` mediumint NOT NULL AUTO_INCREMENT," .
+        "  `nombreCorto` varchar(3) COLLATE utf8_spanish_ci NOT NULL DEFAULT '0'," .
+        "  `nombre` varchar(30) COLLATE utf8_spanish_ci NOT NULL DEFAULT '0'," .
+        "  `puntos` tinyint(4) NOT NULL DEFAULT '0'," .
+        "  `pg` tinyint(4) NOT NULL DEFAULT '0'," .
+        "  `pe` tinyint(4) NOT NULL DEFAULT '0'," .
+        "  `pp` tinyint(4) NOT NULL DEFAULT '0'," .
+        "  `gf` tinyint(4) NOT NULL DEFAULT '0'," .
+        "  `gc` tinyint(4) NOT NULL DEFAULT '0'," .
+        "  PRIMARY KEY (`id`)" .
+        ") ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;" ;
+
+    try {
+        $db= new DB();
+        $conn = $db->getConexionPDOsinDB();
+        $wellDone = $conn->exec($sql);
+        if ($wellDone !== false) {
+            echo "Table Equipos is created successfully!<br/>";
+        } else {
+            echo "Error creating the Esquipos table.<br/>";
+        }
+
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    } finally {
+        $conn = null;
+    }
+    return $sql;
+}
+
+function insertTeamsTableDB($arrayObjectsTeams) {
+    $sql = "USE `bdfinalphp`; ";
+    $sql .= "INSERT INTO `equipos`  VALUES  ";
+    createTeamsTableDB();
+
+    for ($i = 1 ; $i <= sizeof($arrayObjectsTeams) ; $i++) {
+        $oneTeam = $arrayObjectsTeams[$i];
+        $sql .= "(" . $oneTeam->getId() . ",'" . $oneTeam->getNombreCorto() . "','" . $oneTeam->getNombre();
+        $sql .= "'," . $oneTeam->getPuntos() . "," . $oneTeam->getGf() . "," . $oneTeam->getGc() . "," . $oneTeam->getPg();
+        $sql .= "," . $oneTeam->getPe() . "," . $oneTeam->getPp() . ")";
+        //mientras insertamos datos separamos con coma, al final cerramos con ;
+        $sql .= ($i < sizeof($arrayObjectsTeams)) ? "," : ";";
+    }
+
+    try {
+        $db= new DB();
+        $pdoConnection = $db->getConexionPDOsinDB();
+        $prepareQuery = $pdoConnection->prepare($sql);
+        $wellDone = $prepareQuery->execute();
+
+        if ($wellDone !== false) {
+            echo "Table equipos is created successfully! and Datas inserted<br/>";
+        } else {
+            echo "Error creating the equipos table or inserting Datas.<br/>";
+        }
+
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    } finally {
+        $pdoConnection = null;
+    }
+
+}
+
+function createMatchesTableDB() {
+    $sql = "";
+    if (!isExistDataBaseName("bdfinalphp")) {
+        //$sql = "CREATE DATABASE $dataBaseName; ";
+        $sql = "DROP DATABASE IF  EXISTS `bdfinalphp` ; CREATE DATABASE IF NOT EXISTS `bdfinalphp` DEFAULT CHARACTER SET utf8 COLLATE utf8_spanish_ci;";
+
+    }
+    $sql .= "USE `bdfinalphp`; ";
+
+    $sql .= "drop table IF exists `partidos`;" .
+        "CREATE TABLE IF NOT EXISTS `partidos` (" .
+        "  `id` mediumint NOT NULL AUTO_INCREMENT," .
+        "  `jornada` tinyint(4) NOT NULL DEFAULT '0'," .
+        "  `eL` varchar(3) COLLATE utf8_spanish_ci NOT NULL DEFAULT '0'," .
+        "  `gL` tinyint(4) NOT NULL DEFAULT '0'," .
+        "  `eV` varchar(3) COLLATE utf8_spanish_ci NOT NULL DEFAULT '0'," .
+        "  `gV` tinyint(4) NOT NULL DEFAULT '0'," .
+        "  PRIMARY KEY (`id`)" .
+        ") ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;";
+
+
+
+
+    try {
+        $db= new DB();
+        $conn = $db->getConexionPDOsinDB();
+        $wellDone = $conn->exec($sql);
+        if ($wellDone !== false) {
+            echo "Table partidos is created successfully!<br/>";
+        } else {
+            echo "Error creating the partidos table.<br/>";
+        }
+
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    } finally {
+        $conn = null;
+    }
+    return $sql;
+}
+
+function insertMatchesTableDB($arrayObjectsMatches) {
+    $sql = "USE `bdfinalphp`; ";
+    $sql .= "INSERT INTO `partidos`  VALUES  ";
+    createMatchesTableDB();
+
+    for ($i = 1 ; $i <= sizeof($arrayObjectsMatches) ; $i++) {
+        $oneMatch = $arrayObjectsMatches[$i];
+        $sql .= "(" . $oneMatch->getId() . "," . $oneMatch->getJornada() . ",'" . $oneMatch->getEL();
+        $sql .= "'," . $oneMatch->getGL() . ",'" . $oneMatch->getEV() . "'," . $oneMatch->getGV() . ")";
+
+        //mientras insertamos datos separamos con coma, al final cerramos con ;
+        $sql .= ($i < sizeof($arrayObjectsMatches)) ? "," : ";";
+    }
+
+    try {
+        $db= new DB();
+        $pdoConnection = $db->getConexionPDOsinDB();
+        $prepareQuery = $pdoConnection->prepare($sql);
+        $wellDone = $prepareQuery->execute();
+
+        if ($wellDone !== false) {
+            echo "Datas of Table partidos is inserted successfully!<br/>";
+        } else {
+            echo "Error creating the partidos table or inserting Datas.<br/>";
+        }
+
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    } finally {
+        $pdoConnection = null;
+    }
+
+}
+
+
 // OBJETIVO 3.1
 function cargaEquipos()
 {
     $db = new DB();
-    $conn = $db->getConexionPDO();
+    $conn = $db->getConexionPDOsinDB();
     if ($conn->errorCode() != 0)
         die("Ooops...db error");
     $equipos = array();
     $sql = "SELECT * FROM `equipos`";
     $sentencia = $conn->prepare($sql);
     $sentencia->execute();
-    $results = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+    $equipos = $sentencia->fetchAll(PDO::FETCH_ASSOC);
 
     // recorre $results, creando el asociativo con los valores a cero (puntos, etc..)
     // usa la clase Equipo
@@ -50,25 +295,29 @@ function cargaEquipos()
 function creaClasificacion()
 {
     $db = new DB();
-    $conn = $db->getConexionPDO();
+    $conn = $db->getConexionPDOsinDB();
     if ($conn->errorCode() != 0)
         die("Ooops...db error");
 
     $sql = "SELECT * FROM `partidos`";
     $sentencia = $conn->prepare($sql);
     $sentencia->execute();
-    $results = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+    $partidos = $sentencia->fetchAll(PDO::FETCH_ASSOC);
     $equipos = cargaEquipos();
 
-
-
+    $clasificacion = teamClasification($partidos, $equipos);
     // recorrer $results actualizando puntos, goles, partidos del equipo local  y visitante
-    // según haya sido el resultado(compara goles local y visitante), hay tres casos.
+    // segï¿½n haya sido el resultado(compara goles local y visitante), hay tres casos.
+    echo "<pre>";
+    echo "<a href='../index.php'> Regresar al menÃº anterior</a><br>";
+        var_dump($partidos);
+        var_dump($equipos);
+        var_dump($clasificacion);
+    echo "</pre>";
 
-
-    return $equipos;
+    return $clasificacion;
 }
-// la función que recibe el asociativo anterior y lo ordena por puntos...
+// la funciï¿½n que recibe el asociativo anterior y lo ordena por puntos...
 function ordenaPorPuntos($e)
 {
     $puntos = array();
@@ -80,9 +329,75 @@ function ordenaPorPuntos($e)
     return $e;
 }
 
-function muestra_Clasificacion($equipos)
-{
+function muestra_Clasificacion($equipos)  {
 // recorrer el asociativo y mostrar su contenido en una tabla HTML
 
 }
 
+function teamClasification($partidos, $equipos) {
+    $arrayTeamClasification = array();
+    $teams = $equipos;
+    $matches = $partidos;
+    foreach ($matches as $orderMatch => $match) {
+        //$idMatch = $match->getId();
+        //$weeklyMatchNumber = $match->getWeeklyMatchNumber();
+        $shortNameLocalTeam = $match->getShortNameLocalTeam();
+        $goalsLocalTeam = intval($match->getGoalsLocalTeam());
+        $shortNameVisitTeam = $match->getShortNameVisitTeam();
+        $goalsVisitTeam = intval($match->getGoalsVisitTeam());
+
+        if (!key_exists($shortNameLocalTeam, $arrayTeamClasification)) {
+            $arrayTeamClasification[$shortNameLocalTeam] = array("points" => 0, "goalsFor" => 0, "goalsAgainst" => 0, "matchesWon" => 0, "matchesDrawn" => 0, "matchesLost" => 0);
+        }
+        if (!key_exists($shortNameVisitTeam, $arrayTeamClasification)) {
+            $arrayTeamClasification[$shortNameVisitTeam] = array("points" => 0, "goalsFor" => 0, "goalsAgainst" => 0, "matchesWon" => 0, "matchesDrawn" => 0, "matchesLost" => 0);
+        }
+        $clasDatasTemp = setWonDrawnLost($goalsLocalTeam, $goalsVisitTeam);
+        $arrayTeamMatch = array($shortNameLocalTeam, $shortNameVisitTeam);
+
+        for ($i = 0; $i < 2; $i++) {
+            $teamName = $arrayTeamMatch[$i];
+            $j = 0;
+            foreach ($arrayTeamClasification[$teamName] as $dataName => $value) {
+                // $dataName   ->>   points goalsFor goalsAgainst matchWon matchDrawn matchLost
+
+                // la variable $trans se encarga de concatenar strings para crear el nombre del mÃ©todo
+                //setter que se necesita para meter datos en el objeto de la clase Team
+                $transformationToSet = 'set'.strtoupper(substr($dataName,0,1)).substr($dataName,1);
+                $transformationToGet = 'get'.strtoupper(substr($dataName,0,1)).substr($dataName,1);
+
+                //como la clase Team no tiene el atributo points pues es como si fuera la edad de una persona
+                //que no se pone como atributo sino que se calcula a apartir de la fecha nacimiento
+                //pues la propia clase Team tiene un metodo que te dice cuantos puntos tiene segun los partidos
+                //ganados y empatados,
+                if ($dataName != "points" && $goalsLocalTeam != -1 ) {
+                    $team = $teams[$teamName];
+                    $team->$transformationToSet($team->$transformationToGet() + $clasDatasTemp[$i][$j]);
+                    $teams[$teamName] = $team;
+                }
+                $j++;
+            }
+        }
+    }
+    return $teams;
+}
+
+
+function setWonDrawnLost($goalsLocalTeam, $goalsVisitTeam) {
+    //$clasDatasTemp contiene dos arrays no asociativos pero pongo aqui debajo que siginifcan sus valores
+    //"localPoint" => 0, "localGoalsFor" => 0, "localGoalsAgainst" => 0, "localMatchWon" => 0, "localMatchDrawn" => 0, "localMatchLost" => 0
+    //"visitPoint" => 0, "visitGoalsFor" => 0, "visitGoalsAgainst" => 0, "visitMatchWon" => 0, "visitMatchDrawn" => 0, "visitMatchLost" => 0
+    $clasDatasTemp = array(array(0, 0, 0, 0, 0, 0), array(0, 0, 0, 0, 0, 0));
+
+    if ($goalsLocalTeam > $goalsVisitTeam) {
+        $clasDatasTemp = array(array(3, $goalsLocalTeam, $goalsVisitTeam, 1, 0, 0), array(0, $goalsVisitTeam, $goalsLocalTeam, 0, 0, 1));
+
+    } elseif ($goalsLocalTeam < $goalsVisitTeam) {
+        $clasDatasTemp = array(array(0, $goalsLocalTeam, $goalsVisitTeam, 0, 0, 1), array(3, $goalsVisitTeam, $goalsLocalTeam, 1, 0, 0));
+
+        // la siguiente condicion se pone pq en la tabla los partidos que aun no se han jugado tienen como goles -1
+    } elseif ($goalsLocalTeam != -1 && $goalsVisitTeam != -1) {
+        $clasDatasTemp = array(array(1, $goalsLocalTeam, $goalsVisitTeam, 0, 1, 0), array(1, $goalsVisitTeam, $goalsLocalTeam, 0, 1, 0));
+    }
+    return $clasDatasTemp;
+}
