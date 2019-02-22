@@ -30,7 +30,9 @@ if (isset ($_GET['opc']) && $_GET['opc'] == "mostrar") {
     } else {
         muestra_Clasificacion($clasificacion);
     }
-} else {
+} else if (isset ($_GET['update']) && $_GET['update'] == "yes") {
+    updateTeamsTableDB($clasificacion);
+}  else{
 
     echo "<pre>";
     var_dump($clasificacion);

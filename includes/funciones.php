@@ -51,7 +51,7 @@ function cargarTablaEquipos($filePath) {
         echo "<pre>";
         insertTeamsTableDB($arrayTeams);
             echo "<a href='../index.php'> Regresar al menú anterior</a><br>";
-            //var_dump($arrayTeams);
+            var_dump($arrayTeams);
         echo "</pre>";
         return $arrayTeams;
 
@@ -196,6 +196,43 @@ function insertTeamsTableDB($arrayObjectsTeams) {
 
 }
 
+
+function updateTeamsTableDB($arrayObjectsTeams) {
+    $sql = "USE `bdfinalphp`; ";
+    $sql .= "INSERT INTO `equipos`  VALUES  ";
+    createTeamsTableDB();
+
+
+    foreach ($arrayObjectsTeams as $shorTeamName => $oneTeam) {
+        $sql .= "(" . $oneTeam->getId() . ",'" . $oneTeam->getNombreCorto() . "','" . $oneTeam->getNombre();
+        $sql .= "'," . $oneTeam->getPuntos() . "," . $oneTeam->getGf() . "," . $oneTeam->getGc() . "," . $oneTeam->getPg();
+        $sql .= "," . $oneTeam->getPe() . "," . $oneTeam->getPp() . ")";
+        //mientras insertamos datos separamos con coma, al final cerramos con ;
+        $lastElement = end($arrayObjectsTeams);
+        $sql .= ($lastElement->getNombreCorto() == $oneTeam->getNombreCorto()) ? ";" : ",";
+    }
+
+    try {
+        $db= new DB();
+        $pdoConnection = $db->getConexionPDO();
+        $prepareQuery = $pdoConnection->prepare($sql);
+        $wellDone = $prepareQuery->execute();
+
+        if ($wellDone !== false) {
+            echo "Table equipos is created successfully! and Datas inserted<br/>";
+        } else {
+            echo "Error creating the equipos table or inserting Datas.<br/>";
+        }
+
+    } catch (PDOException $e) {
+        echo '<hr>Reading Error4: (' . $e->getMessage() .')';
+    } finally {
+        $pdoConnection = null;
+    }
+
+}
+
+
 function createMatchesTableDB() {
     $sql = "";
     if (!isExistDataBaseName("bdfinalphp")) {
@@ -215,9 +252,6 @@ function createMatchesTableDB() {
         "  `gV` tinyint(4) NOT NULL DEFAULT '0'," .
         "  PRIMARY KEY (`id`)" .
         ") ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;";
-
-
-
 
     try {
         $db= new DB();

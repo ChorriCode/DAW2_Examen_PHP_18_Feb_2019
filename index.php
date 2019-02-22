@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>EXAMEN DE LA SEGUNDA EVALUACION 2018 (PHP)</title>
-    <link rel="stylesheet" href="./View/css/styles.css">
+    <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
 <h1>EXAMEN FINAL DE PHP</h1>
@@ -15,6 +15,7 @@ OBJETIVOS:
     <li><a href="./ejercicios/cargarTablas.php?t=p"> Cargar Tabla Partidos desde ficheros de texto</li>
     <li><a href="./ejercicios/clasificacion.php"> Obtener clasificación (var_dump del objeto)</li>
     <li><a href="./ejercicios/clasificacion.php?opc=mostrar"> Mostrar Tabla clasificación (a partir del objeto anterior)</li>
+    <li><a href="./ejercicios/clasificacion.php?update=yes"> Actualizar la tabla Equipos en la Base de Datos (a partir del objeto anterior)</li>
 </ol>
 
 </body>

@@ -14,8 +14,12 @@ class DB
     {
         try {
             //$this->conexionMysqli = new mysqli($this->host, $this->usr, $this->pwd, $this->db);
-            $this->conexionPDO = new PDO("mysql:host=$this->host;dbname=$this->db", $this->usr, $this->pwd);
             $this->conexionPDOsinDB = new PDO("mysql:host=$this->host;", $this->usr, $this->pwd);
+            if (isExistDataBaseName($this->getDb(), $this->getConexionPDOsinDB())) {
+                $this->conexionPDO = new PDO("mysql:host=$this->host;dbname=$this->db", $this->usr, $this->pwd);
+            }
+
+
         } catch (SQLException $e) {
             die($e->getMessage());
         }
