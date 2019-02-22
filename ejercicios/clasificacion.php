@@ -7,7 +7,8 @@
 </head>
 <body>
 <section>
-    <h2 class="comment"><img class="logo" src='../LogoLigaFutbol.png'>Clasificación Equipos Fútbol Liga Española 2018-2019</h2>
+    <h2 class="comment"><img class="logo" src='../LogoLigaFutbol.png'>Clasificación Equipos Fútbol Liga Española
+        2018-2019</h2>
 </section>
 
 <?php
@@ -21,9 +22,15 @@ require "../includes/funciones.php";
 $clasificacion = creaClasificacion();
 //$x = ordenaPorPuntos($clasificacion);
 
-if (isset ($_GET['opc']) && $_GET['opc'] == "mostrar")
-    muestra_Clasificacion($clasificacion);
-else {
+
+if (isset ($_GET['opc']) && $_GET['opc'] == "mostrar") {
+    if (isset($_GET['sort']) && $_GET['sort'] == "true") {
+        $clasificacion = ordenaPorPuntos($clasificacion, $_GET['by'], 3);
+        muestra_Clasificacion($clasificacion);
+    } else {
+        muestra_Clasificacion($clasificacion);
+    }
+} else {
 
     echo "<pre>";
     var_dump($clasificacion);
