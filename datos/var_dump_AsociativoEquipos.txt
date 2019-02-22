@@ -1,0 +1,442 @@
+array(20) {
+  ["BCN"]=>
+  object(modelo\Equipo)#12 (9) {
+    ["id":"modelo\Equipo":private]=>
+    string(1) "4"
+    ["nombreCorto":"modelo\Equipo":private]=>
+    string(3) "BCN"
+    ["nombre":"modelo\Equipo":private]=>
+    string(11) "BARCELONA
+"
+    ["puntos":"modelo\Equipo":private]=>
+    int(51)
+    ["pg":"modelo\Equipo":private]=>
+    int(15)
+    ["pe":"modelo\Equipo":private]=>
+    int(6)
+    ["pp":"modelo\Equipo":private]=>
+    int(2)
+    ["gf":"modelo\Equipo":private]=>
+    int(60)
+    ["gc":"modelo\Equipo":private]=>
+    int(23)
+  }
+  ["RMA"]=>
+  object(modelo\Equipo)#23 (9) {
+    ["id":"modelo\Equipo":private]=>
+    string(2) "15"
+    ["nombreCorto":"modelo\Equipo":private]=>
+    string(3) "RMA"
+    ["nombre":"modelo\Equipo":private]=>
+    string(13) "REAL MADRID
+"
+    ["puntos":"modelo\Equipo":private]=>
+    int(45)
+    ["pg":"modelo\Equipo":private]=>
+    int(14)
+    ["pe":"modelo\Equipo":private]=>
+    int(3)
+    ["pp":"modelo\Equipo":private]=>
+    int(6)
+    ["gf":"modelo\Equipo":private]=>
+    int(40)
+    ["gc":"modelo\Equipo":private]=>
+    int(27)
+  }
+  ["ATL"]=>
+  object(modelo\Equipo)#11 (9) {
+    ["id":"modelo\Equipo":private]=>
+    string(1) "3"
+    ["nombreCorto":"modelo\Equipo":private]=>
+    string(3) "ATL"
+    ["nombre":"modelo\Equipo":private]=>
+    string(17) "ATLETICO MADRID
+"
+    ["puntos":"modelo\Equipo":private]=>
+    int(44)
+    ["pg":"modelo\Equipo":private]=>
+    int(12)
+    ["pe":"modelo\Equipo":private]=>
+    int(8)
+    ["pp":"modelo\Equipo":private]=>
+    int(3)
+    ["gf":"modelo\Equipo":private]=>
+    int(33)
+    ["gc":"modelo\Equipo":private]=>
+    int(17)
+  }
+  ["SEV"]=>
+  object(modelo\Equipo)#26 (9) {
+    ["id":"modelo\Equipo":private]=>
+    string(2) "18"
+    ["nombreCorto":"modelo\Equipo":private]=>
+    string(3) "SEV"
+    ["nombre":"modelo\Equipo":private]=>
+    string(9) "SEVILLA
+"
+    ["puntos":"modelo\Equipo":private]=>
+    int(37)
+    ["pg":"modelo\Equipo":private]=>
+    int(10)
+    ["pe":"modelo\Equipo":private]=>
+    int(7)
+    ["pp":"modelo\Equipo":private]=>
+    int(6)
+    ["gf":"modelo\Equipo":private]=>
+    int(38)
+    ["gc":"modelo\Equipo":private]=>
+    int(25)
+  }
+  ["ALV"]=>
+  object(modelo\Equipo)#9 (9) {
+    ["id":"modelo\Equipo":private]=>
+    string(1) "1"
+    ["nombreCorto":"modelo\Equipo":private]=>
+    string(3) "ALV"
+    ["nombre":"modelo\Equipo":private]=>
+    string(18) "DEPORTIVO ALAVES
+"
+    ["puntos":"modelo\Equipo":private]=>
+    int(35)
+    ["pg":"modelo\Equipo":private]=>
+    int(10)
+    ["pe":"modelo\Equipo":private]=>
+    int(5)
+    ["pp":"modelo\Equipo":private]=>
+    int(8)
+    ["gf":"modelo\Equipo":private]=>
+    int(24)
+    ["gc":"modelo\Equipo":private]=>
+    int(27)
+  }
+  ["GET"]=>
+  object(modelo\Equipo)#16 (9) {
+    ["id":"modelo\Equipo":private]=>
+    string(1) "8"
+    ["nombreCorto":"modelo\Equipo":private]=>
+    string(3) "GET"
+    ["nombre":"modelo\Equipo":private]=>
+    string(8) "GETAFE
+"
+    ["puntos":"modelo\Equipo":private]=>
+    int(35)
+    ["pg":"modelo\Equipo":private]=>
+    int(9)
+    ["pe":"modelo\Equipo":private]=>
+    int(8)
+    ["pp":"modelo\Equipo":private]=>
+    int(6)
+    ["gf":"modelo\Equipo":private]=>
+    int(28)
+    ["gc":"modelo\Equipo":private]=>
+    int(19)
+  }
+  ["BET"]=>
+  object(modelo\Equipo)#22 (9) {
+    ["id":"modelo\Equipo":private]=>
+    string(2) "14"
+    ["nombreCorto":"modelo\Equipo":private]=>
+    string(3) "BET"
+    ["nombre":"modelo\Equipo":private]=>
+    string(12) "REAL BETIS
+"
+    ["puntos":"modelo\Equipo":private]=>
+    int(32)
+    ["pg":"modelo\Equipo":private]=>
+    int(9)
+    ["pe":"modelo\Equipo":private]=>
+    int(5)
+    ["pp":"modelo\Equipo":private]=>
+    int(9)
+    ["gf":"modelo\Equipo":private]=>
+    int(26)
+    ["gc":"modelo\Equipo":private]=>
+    int(29)
+  }
+  ["RSO"]=>
+  object(modelo\Equipo)#24 (9) {
+    ["id":"modelo\Equipo":private]=>
+    string(2) "16"
+    ["nombreCorto":"modelo\Equipo":private]=>
+    string(3) "RSO"
+    ["nombre":"modelo\Equipo":private]=>
+    string(15) "REAL SOCIEDAD
+"
+    ["puntos":"modelo\Equipo":private]=>
+    int(31)
+    ["pg":"modelo\Equipo":private]=>
+    int(8)
+    ["pe":"modelo\Equipo":private]=>
+    int(7)
+    ["pp":"modelo\Equipo":private]=>
+    int(8)
+    ["gf":"modelo\Equipo":private]=>
+    int(27)
+    ["gc":"modelo\Equipo":private]=>
+    int(25)
+  }
+  ["VAL"]=>
+  object(modelo\Equipo)#27 (9) {
+    ["id":"modelo\Equipo":private]=>
+    string(2) "19"
+    ["nombreCorto":"modelo\Equipo":private]=>
+    string(3) "VAL"
+    ["nombre":"modelo\Equipo":private]=>
+    string(10) "VALENCIA
+"
+    ["puntos":"modelo\Equipo":private]=>
+    int(31)
+    ["pg":"modelo\Equipo":private]=>
+    int(6)
+    ["pe":"modelo\Equipo":private]=>
+    int(13)
+    ["pp":"modelo\Equipo":private]=>
+    int(4)
+    ["gf":"modelo\Equipo":private]=>
+    int(24)
+    ["gc":"modelo\Equipo":private]=>
+    int(20)
+  }
+  ["EIB"]=>
+  object(modelo\Equipo)#14 (9) {
+    ["id":"modelo\Equipo":private]=>
+    string(1) "6"
+    ["nombreCorto":"modelo\Equipo":private]=>
+    string(3) "EIB"
+    ["nombre":"modelo\Equipo":private]=>
+    string(7) "EIBAR
+"
+    ["puntos":"modelo\Equipo":private]=>
+    int(30)
+    ["pg":"modelo\Equipo":private]=>
+    int(7)
+    ["pe":"modelo\Equipo":private]=>
+    int(9)
+    ["pp":"modelo\Equipo":private]=>
+    int(7)
+    ["gf":"modelo\Equipo":private]=>
+    int(31)
+    ["gc":"modelo\Equipo":private]=>
+    int(32)
+  }
+  ["LEG"]=>
+  object(modelo\Equipo)#19 (9) {
+    ["id":"modelo\Equipo":private]=>
+    string(2) "11"
+    ["nombreCorto":"modelo\Equipo":private]=>
+    string(3) "LEG"
+    ["nombre":"modelo\Equipo":private]=>
+    string(9) "LEGANES
+"
+    ["puntos":"modelo\Equipo":private]=>
+    int(29)
+    ["pg":"modelo\Equipo":private]=>
+    int(7)
+    ["pe":"modelo\Equipo":private]=>
+    int(8)
+    ["pp":"modelo\Equipo":private]=>
+    int(8)
+    ["gf":"modelo\Equipo":private]=>
+    int(25)
+    ["gc":"modelo\Equipo":private]=>
+    int(27)
+  }
+  ["ESP"]=>
+  object(modelo\Equipo)#15 (9) {
+    ["id":"modelo\Equipo":private]=>
+    string(1) "7"
+    ["nombreCorto":"modelo\Equipo":private]=>
+    string(3) "ESP"
+    ["nombre":"modelo\Equipo":private]=>
+    string(29) "REAL CLUB DEPORTIVO ESPANOL
+"
+    ["puntos":"modelo\Equipo":private]=>
+    int(28)
+    ["pg":"modelo\Equipo":private]=>
+    int(8)
+    ["pe":"modelo\Equipo":private]=>
+    int(4)
+    ["pp":"modelo\Equipo":private]=>
+    int(11)
+    ["gf":"modelo\Equipo":private]=>
+    int(27)
+    ["gc":"modelo\Equipo":private]=>
+    int(37)
+  }
+  ["ATH"]=>
+  object(modelo\Equipo)#10 (9) {
+    ["id":"modelo\Equipo":private]=>
+    string(1) "2"
+    ["nombreCorto":"modelo\Equipo":private]=>
+    string(3) "ATH"
+    ["nombre":"modelo\Equipo":private]=>
+    string(15) "ATHLETIC CLUB
+"
+    ["puntos":"modelo\Equipo":private]=>
+    int(27)
+    ["pg":"modelo\Equipo":private]=>
+    int(5)
+    ["pe":"modelo\Equipo":private]=>
+    int(12)
+    ["pp":"modelo\Equipo":private]=>
+    int(6)
+    ["gf":"modelo\Equipo":private]=>
+    int(23)
+    ["gc":"modelo\Equipo":private]=>
+    int(28)
+  }
+  ["LEV"]=>
+  object(modelo\Equipo)#20 (9) {
+    ["id":"modelo\Equipo":private]=>
+    string(2) "12"
+    ["nombreCorto":"modelo\Equipo":private]=>
+    string(3) "LEV"
+    ["nombre":"modelo\Equipo":private]=>
+    string(9) "LEVANTE
+"
+    ["puntos":"modelo\Equipo":private]=>
+    int(27)
+    ["pg":"modelo\Equipo":private]=>
+    int(7)
+    ["pe":"modelo\Equipo":private]=>
+    int(6)
+    ["pp":"modelo\Equipo":private]=>
+    int(10)
+    ["gf":"modelo\Equipo":private]=>
+    int(32)
+    ["gc":"modelo\Equipo":private]=>
+    int(42)
+  }
+  ["RVA"]=>
+  object(modelo\Equipo)#25 (9) {
+    ["id":"modelo\Equipo":private]=>
+    string(2) "17"
+    ["nombreCorto":"modelo\Equipo":private]=>
+    string(3) "RVA"
+    ["nombre":"modelo\Equipo":private]=>
+    string(17) "REAL VALLADOLID
+"
+    ["puntos":"modelo\Equipo":private]=>
+    int(26)
+    ["pg":"modelo\Equipo":private]=>
+    int(6)
+    ["pe":"modelo\Equipo":private]=>
+    int(8)
+    ["pp":"modelo\Equipo":private]=>
+    int(9)
+    ["gf":"modelo\Equipo":private]=>
+    int(19)
+    ["gc":"modelo\Equipo":private]=>
+    int(28)
+  }
+  ["CLV"]=>
+  object(modelo\Equipo)#13 (9) {
+    ["id":"modelo\Equipo":private]=>
+    string(1) "5"
+    ["nombreCorto":"modelo\Equipo":private]=>
+    string(3) "CLV"
+    ["nombre":"modelo\Equipo":private]=>
+    string(15) "CELTA DE VIGO
+"
+    ["puntos":"modelo\Equipo":private]=>
+    int(24)
+    ["pg":"modelo\Equipo":private]=>
+    int(6)
+    ["pe":"modelo\Equipo":private]=>
+    int(6)
+    ["pp":"modelo\Equipo":private]=>
+    int(11)
+    ["gf":"modelo\Equipo":private]=>
+    int(35)
+    ["gc":"modelo\Equipo":private]=>
+    int(39)
+  }
+  ["GIR"]=>
+  object(modelo\Equipo)#17 (9) {
+    ["id":"modelo\Equipo":private]=>
+    string(1) "9"
+    ["nombreCorto":"modelo\Equipo":private]=>
+    string(3) "GIR"
+    ["nombre":"modelo\Equipo":private]=>
+    string(8) "GIRONA
+"
+    ["puntos":"modelo\Equipo":private]=>
+    int(24)
+    ["pg":"modelo\Equipo":private]=>
+    int(5)
+    ["pe":"modelo\Equipo":private]=>
+    int(9)
+    ["pp":"modelo\Equipo":private]=>
+    int(9)
+    ["gf":"modelo\Equipo":private]=>
+    int(23)
+    ["gc":"modelo\Equipo":private]=>
+    int(33)
+  }
+  ["RVY"]=>
+  object(modelo\Equipo)#21 (9) {
+    ["id":"modelo\Equipo":private]=>
+    string(2) "13"
+    ["nombreCorto":"modelo\Equipo":private]=>
+    string(3) "RVY"
+    ["nombre":"modelo\Equipo":private]=>
+    string(16) "RAYO VALLECANO
+"
+    ["puntos":"modelo\Equipo":private]=>
+    int(23)
+    ["pg":"modelo\Equipo":private]=>
+    int(6)
+    ["pe":"modelo\Equipo":private]=>
+    int(5)
+    ["pp":"modelo\Equipo":private]=>
+    int(12)
+    ["gf":"modelo\Equipo":private]=>
+    int(27)
+    ["gc":"modelo\Equipo":private]=>
+    int(40)
+  }
+  ["VIL"]=>
+  object(modelo\Equipo)#28 (9) {
+    ["id":"modelo\Equipo":private]=>
+    string(2) "20"
+    ["nombreCorto":"modelo\Equipo":private]=>
+    string(3) "VIL"
+    ["nombre":"modelo\Equipo":private]=>
+    string(11) "VILLAREAL
+"
+    ["puntos":"modelo\Equipo":private]=>
+    int(20)
+    ["pg":"modelo\Equipo":private]=>
+    int(3)
+    ["pe":"modelo\Equipo":private]=>
+    int(11)
+    ["pp":"modelo\Equipo":private]=>
+    int(9)
+    ["gf":"modelo\Equipo":private]=>
+    int(23)
+    ["gc":"modelo\Equipo":private]=>
+    int(31)
+  }
+  ["HSC"]=>
+  object(modelo\Equipo)#18 (9) {
+    ["id":"modelo\Equipo":private]=>
+    string(2) "10"
+    ["nombreCorto":"modelo\Equipo":private]=>
+    string(3) "HSC"
+    ["nombre":"modelo\Equipo":private]=>
+    string(8) "HUESCA
+"
+    ["puntos":"modelo\Equipo":private]=>
+    int(18)
+    ["pg":"modelo\Equipo":private]=>
+    int(4)
+    ["pe":"modelo\Equipo":private]=>
+    int(6)
+    ["pp":"modelo\Equipo":private]=>
+    int(13)
+    ["gf":"modelo\Equipo":private]=>
+    int(23)
+    ["gc":"modelo\Equipo":private]=>
+    int(39)
+  }
+}
