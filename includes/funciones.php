@@ -276,14 +276,15 @@ function insertMatchesTableDB($arrayObjectsMatches) {
 function cargaEquipos()
 {
     $db = new DB();
-    $conn = $db->getConexionPDOsinDB();
+    $conn = $db->getConexionPDO();
     if ($conn->errorCode() != 0)
         die("Ooops...db error");
-    $equipos = array();
+    //$equipos = array();
     $sql = "SELECT * FROM `equipos`";
     $sentencia = $conn->prepare($sql);
     $sentencia->execute();
     $equipos = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+    $equipos = convertTableToArrayObjectsTeam($equipos);
 
     // recorre $results, creando el asociativo con los valores a cero (puntos, etc..)
     // usa la clase Equipo
@@ -291,11 +292,44 @@ function cargaEquipos()
 
     return $equipos;
 }
+
+function convertTableToArrayObjectsTeam($result) {
+    $arrayObjectsTeam = array();
+    foreach ($result as $k => $oneTeamDatas) {
+        $oneTeam = new Equipo();
+        $oneTeam->setId($oneTeamDatas['id']);
+        $oneTeam->setPuntos(0);
+        $oneTeam->setNombreCorto($oneTeamDatas['nombreCorto']);
+        $oneTeam->setNombre($oneTeamDatas['nombre']);
+        $oneTeam->setPg(0);
+        $oneTeam->setPe(0);
+        $oneTeam->setPp(0);
+        $oneTeam->setGf(0);
+        $oneTeam->setGc(0);
+        $arrayObjectsTeam[$oneTeamDatas['nombreCorto']] = $oneTeam;
+    }
+    return $arrayObjectsTeam;
+}
+
+function convertTableToArrayObjectsMatch($result) {
+    $arrayObjectsMatch = array();
+    foreach ($result as $k => $oneMatchDatas) {
+        $oneMatch = new Partido($oneMatchDatas['id']);
+        $oneMatch->setJornada($oneMatchDatas['jornada']);
+        $oneMatch->setEL($oneMatchDatas['eL']);
+        $oneMatch->setGL($oneMatchDatas['gL']);
+        $oneMatch->setEV($oneMatchDatas['eV']);
+        $oneMatch->setGV($oneMatchDatas['gV']);
+        $arrayObjectsMatch[$oneMatchDatas['id']] = $oneMatch;
+    }
+    return $arrayObjectsMatch;
+}
+
 // OBJETIVO 3.2
 function creaClasificacion()
 {
     $db = new DB();
-    $conn = $db->getConexionPDOsinDB();
+    $conn = $db->getConexionPDO();
     if ($conn->errorCode() != 0)
         die("Ooops...db error");
 
@@ -304,17 +338,20 @@ function creaClasificacion()
     $sentencia->execute();
     $partidos = $sentencia->fetchAll(PDO::FETCH_ASSOC);
     $equipos = cargaEquipos();
-
+    $partidos = convertTableToArrayObjectsMatch($partidos);
+    echo "<pre>";
+    echo "<a href='../index.php'> Regresar al menú anterior</a><br>";
+    //var_dump($partidos);
+    //var_dump($equipos);
+    //var_dump($clasificacion);
+    echo "</pre>";
     $clasificacion = teamClasification($partidos, $equipos);
     // recorrer $results actualizando puntos, goles, partidos del equipo local  y visitante
     // seg�n haya sido el resultado(compara goles local y visitante), hay tres casos.
-    echo "<pre>";
-    echo "<a href='../index.php'> Regresar al menú anterior</a><br>";
-        var_dump($partidos);
-        var_dump($equipos);
-        var_dump($clasificacion);
-    echo "</pre>";
 
+    echo "<pre>";
+    //var_dump($clasificacion);
+    echo "</pre>";
     return $clasificacion;
 }
 // la funci�n que recibe el asociativo anterior y lo ordena por puntos...
@@ -329,8 +366,35 @@ function ordenaPorPuntos($e)
     return $e;
 }
 
-function muestra_Clasificacion($equipos)  {
-// recorrer el asociativo y mostrar su contenido en una tabla HTML
+function muestra_Clasificacion($arrayTeamClasification)  {
+$arrayHeaders = ["PG","PE","PG","GF","GE","PUNTOS"];
+    echo "<table>";
+    echo "<thead>";
+    echo "<tr>";
+    echo "<th>TEAMs</th>";
+
+    foreach ($arrayHeaders as $v){
+        echo "<th>" . $v . "<a class='sort' href='./clasificationTableViewTeams.php?sort=true&by=" . $v . "'><img class='sortFilter' src='../filter.png' alt='sort'></a></th>";
+
+    }
+    echo "</tr>";
+    echo "</thead>";
+    echo "<tbody>";
+    foreach ($arrayTeamClasification as $shortTeamName => $team) {
+        echo "<tr>";
+        foreach (get_class_methods($team) as $attribute => $value) {
+            var_dump($value);
+            if (substr($value,0,3) == 'get' && $value != 'getId' && $value != 'getNombreCorto') {
+                echo "<td>" . $team->$value() . "</td>";
+                if ($value == 'getLargeTeamName') {
+                    echo "<td>" . $team->calculatePoints() . "</td>";
+                }
+            }
+        }
+        echo "</tr>";
+    }
+    echo "</tbody>";
+    echo "</table>";
 
 }
 
@@ -341,16 +405,16 @@ function teamClasification($partidos, $equipos) {
     foreach ($matches as $orderMatch => $match) {
         //$idMatch = $match->getId();
         //$weeklyMatchNumber = $match->getWeeklyMatchNumber();
-        $shortNameLocalTeam = $match->getShortNameLocalTeam();
-        $goalsLocalTeam = intval($match->getGoalsLocalTeam());
-        $shortNameVisitTeam = $match->getShortNameVisitTeam();
-        $goalsVisitTeam = intval($match->getGoalsVisitTeam());
+        $shortNameLocalTeam = $match->getEL();
+        $goalsLocalTeam = intval($match->getGL());
+        $shortNameVisitTeam = $match->getEV();
+        $goalsVisitTeam = intval($match->getGV());
 
         if (!key_exists($shortNameLocalTeam, $arrayTeamClasification)) {
-            $arrayTeamClasification[$shortNameLocalTeam] = array("points" => 0, "goalsFor" => 0, "goalsAgainst" => 0, "matchesWon" => 0, "matchesDrawn" => 0, "matchesLost" => 0);
+            $arrayTeamClasification[$shortNameLocalTeam] = array("puntos" => 0, "gf" => 0, "gc" => 0, "pg" => 0, "pe" => 0, "pp" => 0);
         }
         if (!key_exists($shortNameVisitTeam, $arrayTeamClasification)) {
-            $arrayTeamClasification[$shortNameVisitTeam] = array("points" => 0, "goalsFor" => 0, "goalsAgainst" => 0, "matchesWon" => 0, "matchesDrawn" => 0, "matchesLost" => 0);
+            $arrayTeamClasification[$shortNameVisitTeam] = array("puntos" => 0, "gf" => 0, "gc" => 0, "pg" => 0, "pe" => 0, "pp" => 0);
         }
         $clasDatasTemp = setWonDrawnLost($goalsLocalTeam, $goalsVisitTeam);
         $arrayTeamMatch = array($shortNameLocalTeam, $shortNameVisitTeam);
@@ -365,7 +429,6 @@ function teamClasification($partidos, $equipos) {
                 //setter que se necesita para meter datos en el objeto de la clase Team
                 $transformationToSet = 'set'.strtoupper(substr($dataName,0,1)).substr($dataName,1);
                 $transformationToGet = 'get'.strtoupper(substr($dataName,0,1)).substr($dataName,1);
-
                 //como la clase Team no tiene el atributo points pues es como si fuera la edad de una persona
                 //que no se pone como atributo sino que se calcula a apartir de la fecha nacimiento
                 //pues la propia clase Team tiene un metodo que te dice cuantos puntos tiene segun los partidos
@@ -401,3 +464,15 @@ function setWonDrawnLost($goalsLocalTeam, $goalsVisitTeam) {
     }
     return $clasDatasTemp;
 }
+/*
+$oneTeam = new Equipo();
+$oneTeam->setId($oneTeamDatas['id']);
+$oneTeam->setPuntos($oneTeamDatas['puntos']);
+$oneTeam->setNombreCorto($oneTeamDatas['nombreCorto']);
+$oneTeam->setNombre($oneTeamDatas['nombre']);
+$oneTeam->setPg($oneTeamDatas['pg']);
+$oneTeam->setPe($oneTeamDatas['pe']);
+$oneTeam->setPp($oneTeamDatas['pp']);
+$oneTeam->setGf($oneTeamDatas['gf']);
+$oneTeam->setGc($oneTeamDatas['gc']);
+*/
